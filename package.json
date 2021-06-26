@@ -1,0 +1,25 @@
+{
+  "name": "boilerplate-cypress-javascript",
+  "version": "1.0.0",
+  "description": "Cypress JavaScript boilerplate project",
+  "main": "index.js",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathare/boilerplate-cypress-javascript.git"
+  },
+  "author": "Mat Hare",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathare/boilerplate-cypress-javascript/issues"
+  },
+  "homepage": "https://github.com/mathare/boilerplate-cypress-javascript#readme",
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
+  "devDependencies": {
+    "cypress": "^7.6.0",
+    "cucumber": "^7.0.0-rc.0",
+    "cypress-cucumber-preprocessor": "^4.1.2"
+  }
+}
