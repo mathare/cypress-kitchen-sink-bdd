@@ -1,4 +1,6 @@
 const TODO_ITEM = '.todo-list li';
+const ADD_NEW_ITEM = '[data-test=new-todo]';
+const CHECKBOX = 'input[type=checkbox]';
 
 class ToDoAppPage {
 
@@ -7,29 +9,32 @@ class ToDoAppPage {
   }
 
   static verifyNumToDoItems(numItems) {
-    cy.get(TODO_ITEM).should('have.length', numItems);  
+    cy.get(TODO_ITEM).should('have.length', numItems);
   }
 
   static verifyToDoItemText(index, expectedText) {
     cy.get(TODO_ITEM).eq(index).should('have.text', expectedText);
   }
+
+  static addToDoItem(newItem) {
+    cy.get(ADD_NEW_ITEM).type(`${newItem}{enter}`);
+  }
+
+  static completeToDoItem(item) {
+    cy.contains(item).parent().find(CHECKBOX).check();
+  }
+
+  static verifyItemCompleted(item) {
+    cy.contains(item).parents(TODO_ITEM).should('have.class', 'completed');
+  }
+
+  static clickButton(buttonText) {
+    cy.contains(buttonText).click();
+  }
+
+  static verifyElementNotPresent(elementText) {
+    cy.contains(elementText).should('not.exist')
+  }
 }
-
-  
-// #   it('displays two todo items by default', () => {
-//     #     // We use the `cy.get()` command to get all elements that match the selector.
-//     #     // Then, we use `should` to assert that there are two matched items,
-//     #     // which are the two default items.
-//     #     cy.get('.todo-list li').should('have.length', 2)
-    
-//     #     // We can go even further and check that the default todos each contain
-//     #     // the correct text. We use the `first` and `last` functions
-//     #     // to get just the first and last matched elements individually,
-//     #     // and then perform an assertion with `should`.
-//     #     cy.get('.todo-list li').first().should('have.text', 'Pay electric bill')
-//     #     cy.get('.todo-list li').last().should('have.text', 'Walk the dog')
-//     #   })
-
-
 
 export default ToDoAppPage;
