@@ -12,7 +12,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
+    container: cypress/included:7.6.0
     
     steps:
       - name: Checkout repo
@@ -22,6 +22,4 @@ jobs:
       # and run all Cypress tests
       - name: Run Cypress
         uses: cypress-io/github-action@v2
-        with:
-          start: npm run test
-          browser: firefox
+        run: cypress run --browser chrome
