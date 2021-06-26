@@ -1,0 +1,27 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches: [master]
+
+  pull_request:
+    branches: [master]
+
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run test
+          browser: firefox

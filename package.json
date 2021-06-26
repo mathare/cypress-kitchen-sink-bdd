@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Cypress JavaScript boilerplate project",
   "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "test": "cypress run --spec 'cypress/integration/**/*.feature'"
+  },
   "dependencies": {},
   "repository": {
     "type": "git",
