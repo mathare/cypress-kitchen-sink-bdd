@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  cypress-run:
+  cypress-run-chrome:
     runs-on: ubuntu-latest
     container: cypress/included:7.6.0
     
@@ -18,9 +18,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
-          browser: firefox
+          browser: chrome
+
+  cypress-run-electron:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run test
