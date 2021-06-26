@@ -22,4 +22,5 @@ jobs:
       # and run all Cypress tests
       - name: Run Cypress
         uses: cypress-io/github-action@v2
-        run: cypress run --browser chrome
+        with:
+          start: cypress run --browser chrome
