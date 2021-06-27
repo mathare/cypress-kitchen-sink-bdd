@@ -1,4 +1,5 @@
 Feature: Cypress Example ToDo Page
+  Tests for https://example.cypress.io/todo
 
   Background: Open example to-do app
     Given I have opened the to-do app
