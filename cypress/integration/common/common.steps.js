@@ -5,6 +5,5 @@ const PAGE_URLS = new Map([
 ]);
 
 Given('I have opened the {string} page', (pageName) => {
-    console.log(PAGE_URLS.get(pageName));
     cy.visit(PAGE_URLS.get(pageName));
 });
