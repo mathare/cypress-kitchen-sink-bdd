@@ -1,7 +1,7 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import ActionsPage from "../../pages/actions_page";
 
-let control, section;
+let control, section, scroll;
 
 Given('I have entered {string} in the Full Name field', (text) => {
   ActionsPage.enterFullName(text);
@@ -17,7 +17,12 @@ Given('I have entered a coupon code of {string}', (code) => {
 
 Given(/^I have selected the (\d+).{2} radio button$/, (index) => {
   ActionsPage.selectRadioButtonByIndex(index - 1)
-})
+});
+
+Given('the button in the {string} scroll pane is not initially visible', (scrollType) => {
+  ActionsPage.verifyButtonIsVisible(scrollType, false);
+  scroll = scrollType;
+});
 
 When('I enter {string} in the email address field', (email) => {
   ActionsPage.enterEmailAddress(email);
@@ -83,18 +88,59 @@ When('I check on the following checkboxes', (checkboxList) => {
   checkboxList.raw().forEach(checkbox => {
     checkboxes.push(checkbox[0]);
   });
-  ActionsPage.checkMultipleCheckboxes(checkboxes);
+  ActionsPage.checkCheckboxesByValue(checkboxes);
   section = 'multiple checkboxes';
 })
 
-When('I force a click on the disabled checkbox', () => {
-  ActionsPage.forceClickOnDisabledCheckbox();
+When('I force a check on of the disabled checkbox', () => {
+  ActionsPage.forceCheckDisabledCheckbox();
   section = 'checkboxes';
 });
 
 When('I force a click on the disabled radio button', () => {
   ActionsPage.forceClickOnDisabledRadioButton();
 })
+
+When('I uncheck all enabled checkboxes', () => {
+  ActionsPage.uncheckAllEnabledCheckboxes();
+  section = 'uncheck';
+});
+
+When('I uncheck the {string} checkbox', (checkboxValue) => {
+  const checkboxList = [checkboxValue];
+  ActionsPage.uncheckCheckboxesByValue(checkboxList);
+  section = 'uncheck';
+});
+
+When('I uncheck the following checkboxes', (checkboxList) => {
+  let checkboxes = [];
+  checkboxList.raw().forEach(checkbox => {
+    checkboxes.push(checkbox[0]);
+  });
+  ActionsPage.uncheckCheckboxesByValue(checkboxes);
+  section = 'uncheck';
+});
+
+When('I force unchecking of the disabled checkbox', () => {
+  ActionsPage.forceUncheckDisabledCheckbox();
+  section = 'uncheck';
+});
+
+When('I select {string} from the single fruit select list', (fruit) => {
+  ActionsPage.selectOptions('single', fruit);
+});
+
+When('I select {string} from the multiple fruit select list', (fruits) => {
+  ActionsPage.selectOptions('multiple', fruits.split(', '));
+});
+
+When('I scroll the button into view', () => {
+  ActionsPage.scrollButtonIntoView(scroll);
+});
+
+When('I set the slider value to {int}', (value) => {
+  ActionsPage.setSliderValue(value);
+});
 
 Then('{string} is displayed in the email address field', (email) => {
   ActionsPage.verifyEmailAddress(email);
@@ -190,3 +236,58 @@ Then(/^the (\d+).{2} radio button is no longer selected$/, (index) => {
 Then(/^the (\d+).{2} radio button is selected$/, (index) => {
   ActionsPage.verifyRadioButtonState(index - 1, "selected");
 })
+
+Then('the single fruit select list has a default value of {string}', (value) => {
+  ActionsPage.verifySingleSelectedOption(value);
+});
+
+Then('the single fruit select list shows {string} is selected', (fruit) => {
+  //Select list values are prefixed with 'fr-'
+  ActionsPage.verifySingleSelectedOption(fruit);
+});
+
+Then('the multiple fruit select list shows the following are selected', (fruits) => {
+  //Select list values are prefixed with 'fr-'
+  let options = [];
+  fruits.raw().forEach(fruit => {
+    options.push('fr-' + fruit);
+  })
+  ActionsPage.verifyMultipleSelectedOptions(options);  
+});
+
+Then('the selected values in the multiple fruit select list include {string}', (fruit) => {
+  ActionsPage.verifySelectedOptionsInclude(fruit);
+});
+
+Then('the button is now visible', () => {
+  ActionsPage.verifyButtonIsVisible(scroll, true);
+});
+
+Then('the slider label has a value of {string}', (value) => {
+  ActionsPage.verifySliderValue(value);
+});
+
+Then('I can scroll the window to the {string}', (position) => {
+  ActionsPage.scrollWholeWindow(position);
+});
+
+Then('I can scroll the {string} scroll pane to the {string}', (scrollpane, position) => {
+  if (position === 'centre') position = 'center';
+  ActionsPage.scrollScrollPaneInDirection(scrollpane, position);
+});
+
+Then('I can scroll the {string} scroll pane to {int}, {int}', (scrollpane, xPos, yPos) => {
+  ActionsPage.scrollScrollPaneToPosition(scrollpane, xPos, yPos);
+});
+
+Then('I can scroll the {string} scroll pane to {int}%, {int}%', (scrollpane, xPos, yPos) => {
+  ActionsPage.scrollScrollPaneToPosition(scrollpane, xPos + '%', yPos + '%');
+});
+
+Then('I can scroll the {string} scroll pane to the {string} smoothly', (scrollpane, position) => {
+  ActionsPage.scrollScrollPaneSmoothly(scrollpane, position);
+});
+
+Then('I can scroll the {string} scroll pane to the {string} slowly', (scrollpane, position) => {
+  ActionsPage.scrollScrollPaneSlowly(scrollpane, position);
+});

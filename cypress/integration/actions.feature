@@ -125,8 +125,8 @@ Feature: Cypress Example Actions Page
       | Checkbox two has value "checkbox2"   | checked   |
       | Checkbox three has value "checkbox3" | unchecked |
 
-  Scenario: Can force click on disabled checkboxes/radio buttons
-    When I force a click on the disabled checkbox
+  Scenario: Can force check on for disabled checkboxes/radio buttons
+    When I force a check on of the disabled checkbox
     Then the checkboxes have the following states
       | label                                | state     |
       | Checkbox one has value "checkbox1"   | unchecked |
@@ -134,3 +134,94 @@ Feature: Cypress Example Actions Page
       | Checkbox three has value "checkbox3" | unchecked |
     When I force a click on the disabled radio button
     Then the 3rd radio button is selected
+
+  Scenario: Uncheck all enabled checkboxes in turn
+    When I uncheck all enabled checkboxes
+    Then the checkboxes have the following states
+      | label                                | state     |
+      | Checkbox one has value "checkbox1"   | unchecked |
+      | Checkbox two is disabled             | checked   |
+      | Checkbox three has value "checkbox3" | unchecked |
+
+  Scenario: Uncheck checkbox by value
+    When I uncheck the "checkbox1" checkbox
+    Then the checkboxes have the following states
+      | label                                | state     |
+      | Checkbox one has value "checkbox1"   | unchecked |
+      | Checkbox two is disabled             | checked   |
+      | Checkbox three has value "checkbox3" | checked   |
+
+  Scenario: Uncheck multiple checkboxes
+    When I uncheck the following checkboxes
+      | checkbox1 |
+      | checkbox3 |
+    Then the checkboxes have the following states
+      | label                                | state     |
+      | Checkbox one has value "checkbox1"   | unchecked |
+      | Checkbox two is disabled             | checked   |
+      | Checkbox three has value "checkbox3" | unchecked |
+
+  Scenario: Can force uncheck of disabled checkbox
+    When I force unchecking of the disabled checkbox
+    Then the checkboxes have the following states
+      | label                                | state     |
+      | Checkbox one has value "checkbox1"   | checked   |
+      | Checkbox two is disabled             | unchecked |
+      | Checkbox three has value "checkbox3" | checked   |
+
+  Scenario: Verify default select option
+    Then the single fruit select list has a default value of "--Select a fruit--"
+
+  Scenario: Can select from list by text
+    When I select "apples" from the single fruit select list
+    Then the single fruit select list shows "apples" is selected
+
+  Scenario: Can select from list by value
+    When I select "fr-bananas" from the single fruit select list
+    Then the single fruit select list shows "bananas" is selected
+
+  Scenario: Can select multiple options by text at once
+    When I select "apples, oranges, bananas" from the multiple fruit select list
+    Then the multiple fruit select list shows the following are selected
+      | apples  |
+      | oranges |
+      | bananas |
+
+  Scenario: Can select multiple options by value at once
+    When I select "apples, bananas" from the multiple fruit select list
+    Then the multiple fruit select list shows the following are selected
+      | apples  |
+      | bananas |
+
+  Scenario: Verify option included in selected options
+    When I select "apples, oranges" from the multiple fruit select list
+    Then the selected values in the multiple fruit select list include "oranges"
+
+  Scenario: Scroll horizontally to view button
+    Given the button in the "horizontal" scroll pane is not initially visible
+    When I scroll the button into view
+    Then the button is now visible
+
+  Scenario: Scroll vertically to view button
+    Given the button in the "vertical" scroll pane is not initially visible
+    When I scroll the button into view
+    Then the button is now visible
+
+  Scenario: Scroll horizontally and vertically to view button
+    Given the button in the "main" scroll pane is not initially visible
+    When I scroll the button into view
+    Then the button is now visible
+
+  Scenario: Set slider value
+    When I set the slider value to 25
+    Then the slider label has a value of "25"
+
+  Scenario: Scroll entire window
+    Then I can scroll the window to the "bottom"
+
+  Scenario: Scroll pane behaviour
+    Then I can scroll the "horizontal" scroll pane to the "right"
+    And I can scroll the "vertical" scroll pane to 250, 250
+    And I can scroll the "main" scroll pane to 75%, 25%
+    And I can scroll the "vertical" scroll pane to the "centre" smoothly
+    And I can scroll the "main" scroll pane to the "centre" slowly

@@ -20,8 +20,19 @@ const CHECKBOXES_SECTION = '.action-checkboxes';
 const RADIO_BUTTONS_SECTION = '.action-radios';
 const DISABLED = '[disabled]';
 const MULTIPLE_CHECKBOXES_SECTION = '.action-multiple-checkboxes';
+const UNCHECK_SECTION = '.action-check';
 const CHECKBOX = '[type="checkbox"]';
 const RADIO_BUTTON = ' [type="radio"]';
+const SELECT = '.action-select';
+const MULTI_SELECT = '.action-select-multiple';
+const HORIZONTAL_SCROLL = '#scroll-horizontal';
+const VERTICAL_SCROLL = '#scroll-vertical';
+const BOTH_SCROLL = '#scroll-both';
+const BUTTON = 'button';
+const SLIDER = '.trigger-input-range';
+const SCROLLABLE_HORIZONTAL = '#scrollable-horizontal';
+const SCROLLABLE_VERTICAL = '#scrollable-vertical';
+const SCROLLABLE_BOTH = '#scrollable-both';
 
 class ActionsPage {
 
@@ -166,11 +177,21 @@ class ActionsPage {
 
   static verifyCheckboxCheckState(sectionName, label, state) {
     let matched = false;
-    const section = sectionName === "checkboxes" ? CHECKBOXES_SECTION : MULTIPLE_CHECKBOXES_SECTION;
+    let section;
+    switch (sectionName) {
+      case 'checkboxes':
+        section = CHECKBOXES_SECTION;
+        break;
+      case 'multiple checkboxes':
+        section = MULTIPLE_CHECKBOXES_SECTION;
+        break;
+      case 'uncheck':
+        section = UNCHECK_SECTION;
+        break;
+    }
+    // const section = sectionName === "checkboxes" ? CHECKBOXES_SECTION : MULTIPLE_CHECKBOXES_SECTION;
     cy.get(section).find(CHECKBOX).each(checkbox => {
       cy.get(checkbox).parent().invoke('text').then(actualText => {
-        console.log(actualText.trim())
-        console.log(label)
         if (actualText.trim() === label) {
           state === 'checked' ? cy.get(checkbox).should('be.checked') : cy.get(checkbox).should('not.be.checked');
           matched = true;
@@ -191,21 +212,111 @@ class ActionsPage {
   }
 
   static verifyRadioButtonState(index, state) {
-    state === 'selected' ? cy.get(RADIO_BUTTONS_SECTION + ' ' + RADIO_BUTTON).eq(index).should('be.checked') 
+    state === 'selected' ? cy.get(RADIO_BUTTONS_SECTION + ' ' + RADIO_BUTTON).eq(index).should('be.checked')
       : cy.get(RADIO_BUTTONS_SECTION + ' ' + RADIO_BUTTON).eq(index).should('not.be.checked');
   }
 
-  static checkMultipleCheckboxes(checkboxes) {
+  static checkCheckboxesByValue(checkboxes) {
     cy.get(MULTIPLE_CHECKBOXES_SECTION + ' ' + CHECKBOX).check(checkboxes);
   }
 
-  static forceClickOnDisabledCheckbox() {
-    cy.get(CHECKBOXES_SECTION + ' ' + DISABLED).check({force: true});
+  static forceCheckDisabledCheckbox() {
+    cy.get(CHECKBOXES_SECTION + ' ' + DISABLED).check({ force: true });
   }
 
   static forceClickOnDisabledRadioButton() {
-    cy.get(RADIO_BUTTONS_SECTION + ' ' + DISABLED).check({force: true});
+    cy.get(RADIO_BUTTONS_SECTION + ' ' + DISABLED).check({ force: true });
   }
+
+  static uncheckAllEnabledCheckboxes() {
+    cy.get(UNCHECK_SECTION + ' ' + CHECKBOX).not(DISABLED).uncheck();
+  }
+
+  static uncheckCheckboxesByValue(checkboxes) {
+    cy.get(UNCHECK_SECTION + ' ' + CHECKBOX).uncheck(checkboxes);
+  }
+
+  static forceUncheckDisabledCheckbox() {
+    cy.get(UNCHECK_SECTION + ' ' + DISABLED).uncheck({ force: true });
+  }
+
+  static selectOptions(type, options) {
+    //Can select by text or value using the same call
+    const control = type === 'single' ? SELECT : MULTI_SELECT;
+    cy.get(control).select(options);
+  }
+
+  static verifySingleSelectedOption(option) {
+    if (!option.startsWith('--')) option = 'fr-' + option;
+    cy.get(SELECT).should('have.value', option);
+  }
+
+  static verifyMultipleSelectedOptions(options) {
+    cy.get(MULTI_SELECT).invoke('val').should('deep.equal', options)
+  }
+
+  static verifySelectedOptionsInclude(option) {
+    cy.get(MULTI_SELECT).invoke('val').should('include', 'fr-' + option);
+  }
+
+  static verifyButtonIsVisible(scrollType, visible) {
+    const button = this.#getScrollControl(scrollType) + ' ' + BUTTON
+    visible ? cy.get(button).should('be.visible') : cy.get(button).should('not.be.visible')
+  }
+
+  static scrollButtonIntoView(scrollType) {
+    cy.get(this.#getScrollControl(scrollType) + ' ' + BUTTON).scrollIntoView();
+  }
+
+  static setSliderValue(value) {
+    cy.get(SLIDER).invoke('val', value).trigger('change');
+  }
+
+  static verifySliderValue(value) {
+    cy.get(SLIDER).siblings('p').should('have.text', value);
+  }
+
+  static scrollWholeWindow(position) {
+    position = this.#validateScrollPosition(position);
+    cy.scrollTo(position);
+  }
+
+  static scrollScrollPaneInDirection(scrollType, position) {
+    position = this.#validateScrollPosition(position);
+    cy.get(this.#getScrollableControl(scrollType)).scrollTo(position);
+  }
+
+  static scrollScrollPaneToPosition(scrollType, xPos, yPos) {
+    //Can be absolute (pixel) position or percentage position
+    cy.get(this.#getScrollableControl(scrollType)).scrollTo(xPos, yPos);
+  }
+
+  static scrollScrollPaneSmoothly(scrollType, position) {
+    position = this.#validateScrollPosition(position);
+    cy.get(this.#getScrollableControl(scrollType)).scrollTo(position, {easing: 'linear'});
+  }
+
+  static scrollScrollPaneSlowly(scrollType, position) {
+    position = this.#validateScrollPosition(position);
+    cy.get(this.#getScrollableControl(scrollType)).scrollTo(position, {duration: 2000});
+  }
+
+  static #getScrollControl(scrollType) {
+    if (scrollType === 'horizontal') return HORIZONTAL_SCROLL;
+    if (scrollType === 'vertical') return VERTICAL_SCROLL;
+    if (scrollType === 'main') return BOTH_SCROLL;
+  }
+
+  static #getScrollableControl(scrollType) {
+    if (scrollType === 'horizontal') return SCROLLABLE_HORIZONTAL;
+    if (scrollType === 'vertical') return SCROLLABLE_VERTICAL;
+    if (scrollType === 'main') return SCROLLABLE_BOTH;
+  }
+
+  static #validateScrollPosition(position) {
+    return position === 'centre' ? 'center' : position;
+  }
+
 }
 
 export default ActionsPage;
