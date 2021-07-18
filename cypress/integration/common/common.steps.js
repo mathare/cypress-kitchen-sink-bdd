@@ -1,7 +1,8 @@
 import {Given} from "cypress-cucumber-preprocessor/steps"
 
 const PAGE_URLS = new Map([
-    ['Actions', '/commands/actions']
+    ['Actions', '/commands/actions'],
+    ['Aliasing', '/commands/aliasing']
 ]);
 
 Given('I have opened the {string} page', (pageName) => {
