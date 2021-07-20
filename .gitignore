@@ -3,3 +3,7 @@
 
 # Dependency dirs
 node_modules/
+
+# Cypress 
+cypress/screenshots/
+
