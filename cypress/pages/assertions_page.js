@@ -4,8 +4,15 @@ const DATA_CELL = 'td'
 const LINK = '.assertions-link'
 const TEXT_BLOCK = '.assertions-p'
 const PARAGRAPH = 'p'
+const DOCS_HEADER = '.docs-header'
+const DIV = 'div'
+const TOO_MANY_ELEMENTS_ERROR = 'Found more than 0 elements'
+const TWO_ELEMENTS = '.two-elements'
+const FIRST = '.first'
+const SECOND = '.second'
+const RANDOM_NUMBER = '#random-number'
 
-let chaiObject
+let chaiObject, person = {}
 
 class AssertionsPage {
 
@@ -84,7 +91,75 @@ class AssertionsPage {
         });
     }
 
+    static findElementUsingClassNameRegex(regex) {
+        cy.get(DOCS_HEADER).find(DIV).as('regexDiv').should(($div) => {
+            expect($div).to.have.length(1);
+            const className = $div[0].className;
+            expect(className).to.match(new RegExp(regex));
+        });
+    }
+
+    static verifyDivText(expectedText) {
+        cy.get('@regexDiv').should('have.text', expectedText);
+    }
+
+    static expectErrorMessage() {
+        cy.on('fail', (e) => {
+            if (!e.message.includes(TOO_MANY_ELEMENTS_ERROR)) {
+                throw e;
+            }
+        });
+    }
+
+    static throwCustomError() {
+        cy.get(DOCS_HEADER).find(DIV).should(($div) => {
+            if ($div.length !== 0) {
+                throw new Error(TOO_MANY_ELEMENTS_ERROR);
+            }
+        });
+    }
+
+    static #normaliseText(text) {
+        return text.replace(/\s/g, '').toLowerCase();
+    }
+
+    static verifyElementsMatchIgnoringCaseAndWhiteSpace(expected1, expected2) {
+        let text;
+        cy.get(TWO_ELEMENTS).find(FIRST)
+            .should('have.text', expected1)
+            .then($first => {
+                text = this.#normaliseText($first.text());
+            });
+        cy.get(TWO_ELEMENTS).find(SECOND)
+            .should('have.text', expected2)
+            .then($second => {
+                const secondText = this.#normaliseText($second.text());
+                expect(secondText).to.eq(text);
+            });
+    }
+
+    static declareObject(details) {
+        person = {};
+        const headers = ['Key', 'Value'];
+        expect(details.raw()[0]).to.deep.eq(headers);
+        details.rows().forEach(keyValuePair => {
+            person[keyValuePair[0]] = keyValuePair[1];
+        })
+        cy.then(() => {});
+    }
+
+    static verifyIsObject() {
+        assert.isObject(person);
+    }
+
+    static verifyRandomNumberInRange(min, max) {
+        //Random number will be NaN for a short while so retry until it is a valid number
+        cy.get(RANDOM_NUMBER).should($div => {
+            const n = parseFloat($div.text());
+            expect(n).to.be.gte(min).and.be.lte(max);
+        });
+    }
+
 }
 
 export default AssertionsPage;
-

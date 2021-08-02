@@ -34,8 +34,31 @@ Feature: Cypress Example Assertions Page
 
     Scenario: Use custom callback function in should() assertion
         # This is another test that is difficult to layer BDD on top of, making it very artificial
-        # A custom callback function containing explicit assertions is passed as parameter to the 
+        # A custom callback function containing explicit assertions is passed as parameter to the
         # should() assertion method, which then runs the callback method
         Then I can pass a callback function to 'should' to assert a block of text has 3 paragraphs
 
+    Scenario: Find element by class name regex
+        Given I find an element with a class name starting with "heading-"
+        Then the element text is "Introduction"
 
+    Scenario: Can throw own errors
+        # Yet another test that doesn't really fit into the BDD style so is quite artificial.
+        # It's not easy to split the functionality across multiple steps but for the test to be
+        # meaningful BDD it really should have multiple steps
+        Given I expect a custom error to be thrown when more than 0 matching elements are found
+        When a find elements call returns 1 matching element
+        Then my custom error is thrown
+
+    Scenario: Manipulate text before comparison
+        Then the "Foo Bar" and "foo b a r" elements match ignoring case and whitespace
+
+    Scenario: Object verification
+        Given I have declared a 'person' object with the following key-value pairs
+            | Key  | Value |
+            | name | Joe   |
+            | age  | 20    |
+        Then I can assert 'person' is an object
+
+    Scenario: Callback function in 'should()' retried until assertions pass
+        Then the random number will be between 1 and 10
