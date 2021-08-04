@@ -8,6 +8,7 @@ const PAGE_URLS = new Map([
     ['Connectors', '/commands/connectors'],
     ['Cookies', '/commands/cookies'],
     ['Local Storage', '/commands/local-storage'],
+    ['Viewport', '/commands/viewport'],
     ['Window', '/commands/window']
 ]);
 
