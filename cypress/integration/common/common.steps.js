@@ -1,6 +1,7 @@
 import {Given} from "cypress-cucumber-preprocessor/steps"
 
 const PAGE_URLS = new Map([
+    ['Home', '/'],
     ['Actions', '/commands/actions'],
     ['Aliasing', '/commands/aliasing'],
     ['Assertions', '/commands/assertions'],
