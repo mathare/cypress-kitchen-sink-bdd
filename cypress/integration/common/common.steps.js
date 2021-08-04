@@ -4,7 +4,8 @@ const PAGE_URLS = new Map([
     ['Actions', '/commands/actions'],
     ['Aliasing', '/commands/aliasing'],
     ['Assertions', '/commands/assertions'],
-    ['Connectors', '/commands/connectors']
+    ['Connectors', '/commands/connectors'],
+    ['Cookies', '/commands/cookies']
 ]);
 
 Given('I have opened the {string} page', (pageName) => {
