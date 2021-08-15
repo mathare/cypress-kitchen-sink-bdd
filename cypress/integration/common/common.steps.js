@@ -10,6 +10,7 @@ const PAGE_URLS = new Map([
     ['Files', '/commands/files'],
     ['Local Storage', '/commands/local-storage'],
     ['Location', '/commands/location'],
+    ['Network Requests', '/commands/network-requests'],
     ['Viewport', '/commands/viewport'],
     ['Waiting', '/commands/waiting'],
     ['Window', '/commands/window']
