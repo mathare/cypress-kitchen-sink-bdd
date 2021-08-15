@@ -7,6 +7,7 @@ const PAGE_URLS = new Map([
     ['Assertions', '/commands/assertions'],
     ['Connectors', '/commands/connectors'],
     ['Cookies', '/commands/cookies'],
+    ['Files', '/commands/files'],
     ['Local Storage', '/commands/local-storage'],
     ['Location', '/commands/location'],
     ['Viewport', '/commands/viewport'],
