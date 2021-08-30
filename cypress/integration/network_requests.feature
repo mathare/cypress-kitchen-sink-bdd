@@ -43,3 +43,20 @@ Feature: Cypress Example Network Requests Page
             | title  | Cypress Test Runner                                                  |
             | body   | Fast, easy and reliable testing for anything that runs in a browser. |
             | id     | 101                                                                  |
+
+    Scenario: Intercept response to GET request with cy.intercept()
+        Given I have set up an intercept on a "GET" request to the "comments" endpoint
+        When I click the "Get Comment" button
+        Then the intercepted response status code is 200
+
+    Scenario: Intercept response to POST request with cy.intercept()
+        Given I have set up an intercept on a "POST" request to the "comments" endpoint
+        When I click the "Post Comment" button
+        Then the intercepted request headers have a "content-type" property
+        And the intercepted request body includes "email"
+        And the intercepted response body has a "name" property with a value of "Using POST in cy.intercept()"
+
+    Scenario: Stub PUT request with cy.intercept()
+        Given I have stubbed a response to a "PUT" request to the "comments" endpoint
+        When I click the "Update Comment" button
+        Then the response contains "whoa, this comment does not exist"

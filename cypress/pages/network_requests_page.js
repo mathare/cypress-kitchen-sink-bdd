@@ -1,6 +1,10 @@
 const BASE_URL = 'https://jsonplaceholder.cypress.io/'
+const GET_COMMENT_BTN = '.network-btn'
+const POST_COMMENT_BTN = '.network-post'
+const PUT_COMMENT_BTN = '.network-put'
+const PUT_COMMENT = '.network-put-comment'
 
-let response;
+let response, alias, intercepted;
 
 class NetworkRequestsPage {
 
@@ -79,6 +83,60 @@ class NetworkRequestsPage {
             //Convert actual value to string for easier comparison with expected value
             expect(response.body[row[0]].toString()).to.eq(row[1]);
         });
+    }
+
+    static setupIntercept(verb, endpoint) {
+        alias = (verb + '_' + endpoint).toLowerCase();
+        let url = '**/' + endpoint;
+        if (verb === 'GET') {
+            url = url + '/*';
+        }
+        cy.intercept(verb, url).as(alias);
+    }
+
+    static clickButton(button) {
+        if (button === 'Get Comment') {
+            cy.get(GET_COMMENT_BTN).click();
+        } else if (button === 'Post Comment') {
+            cy.get(POST_COMMENT_BTN).click();
+        } else if (button === 'Update Comment') {
+            cy.get(PUT_COMMENT_BTN).click();
+        }
+        cy.wait('@' + alias).then(res => {
+                return res;
+        }).then(res => {
+            intercepted = res;
+        });
+    }
+
+    static verifyInterceptedResponseStatusCode(expected) {
+        expect(intercepted.response.statusCode).to.equal(expected);
+    }
+
+    static verifyInterceptedRequestHeader(property) {
+        expect(intercepted.request.headers).to.have.property(property);
+    }
+
+    static verifyInterceptedRequestBody(expected) {
+        expect(intercepted.request.body).to.include(expected);
+    }
+
+    static verifyInterceptedResponseBody(prop, value) {
+        expect(intercepted.response && intercepted.response.body).to.have.property(prop, value);
+    }
+
+    static stubResponse(verb, endpoint) {
+        alias = (verb + '_' + endpoint).toLowerCase();
+        cy.intercept(verb, '**/' + endpoint + '/*', {
+            statusCode: 404,
+            body: { error: 'whoa, this comment does not exist' },
+            headers: { 'access-control-allow-origin': '*' },
+            delayMs: 500,
+        }).as(alias);
+    }
+
+    static verifyStubbedResponse(message) {
+        cy.get(PUT_COMMENT).should('contain', message)
     }
 
 }
