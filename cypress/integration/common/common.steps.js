@@ -11,6 +11,7 @@ const PAGE_URLS = new Map([
     ['Local Storage', '/commands/local-storage'],
     ['Location', '/commands/location'],
     ['Network Requests', '/commands/network-requests'],
+    ['Querying', '/commands/querying'],
     ['Viewport', '/commands/viewport'],
     ['Waiting', '/commands/waiting'],
     ['Window', '/commands/window']
