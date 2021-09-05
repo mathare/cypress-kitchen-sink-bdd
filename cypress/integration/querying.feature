@@ -46,7 +46,7 @@ Feature: Cypress Example Querying Page
 
     Scenario: Use cy.root() to obtain DOM element
         Then the 'query-ul' element has class "query-ul"
-    @focus
+
     Scenario Outline: Interacting with elements via different selector types - <type>
         Then I can click the element found using the "<type>" selector of "<selector>"
         Examples:
