@@ -36,3 +36,19 @@ Then('the {string} element with text {string} has a class of {string}', (selecto
 Then('the button with text {string} should have a class of {string}', (text, className) => {
     QueryingPage.verifyButtonClassNameByText(text, className);
 });
+
+Then('the {string} input within the form should have placeholder text of {string}', (index, placeholder) => {
+    QueryingPage.verifyInputPlaceholderText(index, placeholder);
+});
+
+Then('the root matches {string}', (expected) => {
+    QueryingPage.verifyRootMatches(expected);
+});
+
+Then('the \'query-ul\' element has class {string}', (className) => {
+    QueryingPage.verifyQueryULRootClassName(className);
+});
+
+Then('I can click the element found using the {string} selector of {string}', (type, selector) => {
+    QueryingPage.clickElementFoundBySelector(type, selector);
+});

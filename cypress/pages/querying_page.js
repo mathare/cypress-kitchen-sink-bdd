@@ -2,11 +2,15 @@ const MAIN_DIV = '#querying'
 const DIV_DATA_ATTR = '[data-test-id="test-example"]'
 const QUERY_LIST = '.query-list'
 const QUERY_BTN = '.query-button'
+const WITHIN_FORM = '.query-form'
+const UNORDERED_LIST = '.query-ul'
+const SELECTORS_DIV = '[data-cy=best-practices-selecting-elements]'
 
 let element;
 
 class QueryingPage {
 
+    //Candidate for custom command passing in selector
     static getElementBySelector(selector) {
         cy.get(selector).then((el) => {
             return el;
@@ -50,6 +54,34 @@ class QueryingPage {
         cy.get(QUERY_BTN).contains(text).should('have.class', className);
     }
 
+    static verifyInputPlaceholderText(index, placeholder) {
+        cy.get(WITHIN_FORM).within(() => {
+            cy.get('input:' + index).should('have.attr', 'placeholder', placeholder);
+        })
+    }
+
+    static verifyRootMatches(expected) {
+        cy.root().should('match', expected);
+    }
+
+    static verifyQueryULRootClassName(className) {
+        cy.get(UNORDERED_LIST).within(() => {
+            // In this within, the root is now the ul DOM element
+            cy.root().should('have.class', className);
+        })
+    }
+
+    static clickElementFoundBySelector(type, selector) {
+        if (type === 'text') {
+            cy.get(SELECTORS_DIV).within(() => {
+                cy.contains(selector).click();
+            })
+        } else {
+            cy.get(SELECTORS_DIV).within(() => {
+                cy.get(selector).click();
+            })
+        }
+    }
 }
 
 export default QueryingPage;
