@@ -22,15 +22,3 @@ jobs:
         with:
           browser: chrome
           start: npm run test
-
-  cypress-run-electron:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      
-      - name: Run Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          start: npm run test
