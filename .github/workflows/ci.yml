@@ -12,7 +12,6 @@ on:
 jobs:
   cypress-run-chrome:
     runs-on: ubuntu-latest
-    container: cypress/included:9.4.1
     
     steps:
       - name: Checkout repo
@@ -22,6 +21,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
+          start: npm run test
 
   cypress-run-electron:
     runs-on: ubuntu-latest
