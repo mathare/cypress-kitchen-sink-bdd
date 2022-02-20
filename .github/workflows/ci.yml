@@ -12,7 +12,7 @@ on:
 jobs:
   cypress-run-chrome:
     runs-on: ubuntu-latest
-    container: cypress/included:7.6.0
+    container: cypress/included:9.5.0
     
     steps:
       - name: Checkout repo
