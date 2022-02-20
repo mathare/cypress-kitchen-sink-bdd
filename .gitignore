@@ -1,6 +1,3 @@
-# IDE-specific dirs & files
-/.idea/
-
 # Dependency dirs
 node_modules/
 
