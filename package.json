@@ -1,8 +1,7 @@
 {
-  "name": "boilerplate-cypress-javascript",
+  "name": "cypress-kitchen-sink-bdd",
   "version": "1.0.0",
-  "description": "Cypress JavaScript boilerplate project",
-  "main": "index.js",
+  "description": "Cypress Kitchen Sink example tests rewritten to use Cucumber (BDD)",
   "scripts": {
     "cypress:open": "cypress open",
     "test": "cypress run --spec 'cypress/integration/**/*.feature'"
@@ -10,14 +9,14 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mathare/boilerplate-cypress-javascript.git"
+    "url": "git+https://github.com/mathare/cypress-kitchen-sink-bdd.git"
   },
   "author": "Mat Hare",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mathare/boilerplate-cypress-javascript/issues"
+    "url": "https://github.com/mathare/cypress-kitchen-sink-bdd/issues"
   },
-  "homepage": "https://github.com/mathare/boilerplate-cypress-javascript#readme",
+  "homepage": "https://github.com/mathare/cypress-kitchen-sink-bdd#readme",
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
   },
