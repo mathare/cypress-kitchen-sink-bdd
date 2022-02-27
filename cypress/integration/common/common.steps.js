@@ -13,12 +13,13 @@ const PAGE_URLS = new Map([
     ['Misc', '/commands/misc'],
     ['Network Requests', '/commands/network-requests'],
     ['Querying', '/commands/querying'],
+    ['Spies, Stubs & Clocks', '/commands/spies-stubs-clocks'],
     ['Traversal', '/commands/traversal'],
     ['Viewport', '/commands/viewport'],
     ['Waiting', '/commands/waiting'],
     ['Window', '/commands/window']
 ]);
 
-Given('I have opened the {string} page', (pageName) => {
+Given(/^(?:I have opened|I open) the "(\D+)" page$/, (pageName) => {
     cy.visit(PAGE_URLS.get(pageName));
 });
