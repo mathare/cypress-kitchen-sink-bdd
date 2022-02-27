@@ -36,7 +36,7 @@ class SpiesStubsClocksPage {
     }
 
     static setDateTime(dateStr, timeStr) {
-        epochTime = Date.parse(dateStr + " " + timeStr)
+        epochTime = Date.parse(dateStr + ' ' + timeStr + ' UTC')
         cy.clock(epochTime)
     }
 

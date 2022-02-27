@@ -31,8 +31,8 @@ Feature: Cypress Example Spies, Stubs & Clocks Page
         Given I have set the time to be "15:30:00" on "11 August 1986"
         When I open the "Spies, Stubs & Clocks" page
         And I click on the tick display element
-        Then the displayed epoch time is "524154600"
+        Then the displayed epoch time is "524158200"
         When I advance the clock 10 seconds
         And I click on the tick display element
-        Then the displayed epoch time is "524154610"
+        Then the displayed epoch time is "524158210"
 
