@@ -18,7 +18,24 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Run Cypress
-        uses: cypress-io/github-action@v2
+        run: CHOKIDAR_USEPOLLING=1 npx cypress run --browser chrome --headless --reporter mochawesome --reporter-options "reportDir=cypress/report/mochawesome-report, overwrite=false, html=false, json=true, timestamp=yyyymmdd_HHMMss"
+
+      - name: Create test report
+        if: always()
+        run: |
+          npx mochawesome-merge cypress/report/mochawesome-report/mochawesome*.json > cypress/report/mochawesome.json
+          npx marge cypress/report/mochawesome.json -o cypress/report -t "Cypress Report" --ts yyyy-mm-dd_HHMM --showSkipped --charts
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        if: always()
         with:
-          browser: chrome
-          start: npm run test
+          name: cypress-report
+          path: cypress/report/mochawesome*.html
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
