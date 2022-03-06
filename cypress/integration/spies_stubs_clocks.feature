@@ -36,3 +36,26 @@ Feature: Cypress Example Spies, Stubs & Clocks Page
         And I click on the tick display element
         Then the displayed epoch time is "524158210"
 
+    Scenario: cy.stub() matches depending on arguments
+        Given a "greet" function that takes a "name" parameter
+        And I have stubbed "greet" such that it returns "Hi" for string arguments and throws an "Invalid name" error for number arguments
+        Then calling "greet" with a name of "World" returns "Hi"
+        Then calling "greet" with a name of 42 throws an "Invalid name" error
+        And the stubbed method has been called twice
+        Then calling "greet" without a name argument returns "Hello, undefined!"
+
+    Scenario: Match call arguments using Sinon matchers
+        Given an "add" function that takes parameters "a" and "b"
+        And I have wrapped "add" in a spy
+        When I call "add" with values of 2 and 3
+        Then "add" returns 5
+        And the spy was called with arguments of 2 and 3
+        And the spy was called with two number arguments
+        And the spy was called with arguments matching 2 and 3
+        And the spy was called with an argument matching 'any' and an argument of 3
+        And the spy was called with one of "[1, 2, 3]" and an argument of 3
+        And the spy was called with an even argument and an argument of 3
+        And the spy was called with a number and an argument between 2 and 4
+        And the spy was called with a number and an argument greater than 200 or exactly 3
+        And the spy was called with a number and an argument of 3
+        And the spy was called with an argument of 2 and a number
