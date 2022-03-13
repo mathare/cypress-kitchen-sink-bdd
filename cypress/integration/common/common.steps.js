@@ -15,6 +15,7 @@ const PAGE_URLS = new Map([
     ['Querying', '/commands/querying'],
     ['Spies, Stubs & Clocks', '/commands/spies-stubs-clocks'],
     ['Traversal', '/commands/traversal'],
+    ['Utilities', '/utilities'],
     ['Viewport', '/commands/viewport'],
     ['Waiting', '/commands/waiting'],
     ['Window', '/commands/window']
