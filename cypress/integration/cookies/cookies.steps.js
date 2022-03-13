@@ -1,7 +1,7 @@
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 import CookiesPage from "../../pages/cookies_page";
 
-Given('I have enabled cooking debugging', () => {
+Given('I have enabled cookie debugging', () => {
     CookiesPage.enableCookieDebugging();
 });
 

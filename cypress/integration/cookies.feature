@@ -2,7 +2,7 @@ Feature: Cypress Example Cookies Page
     Tests for https://example.cypress.io/commands/cookies
 
     Background: Open example cookies page
-        Given I have enabled cooking debugging
+        Given I have enabled cookie debugging
         And I have opened the "Cookies" page
         And I have cleared cookies
 
