@@ -1,8 +1,6 @@
 const NAVBAR = '.navbar-nav'
 const DROPDOWN_MENU = '.dropdown-menu'
 
-let oldPage, newPage
-
 class NavigationPage {
 
     static navigateToPage(pageName) {

@@ -4,7 +4,6 @@ Feature: Cypress Example Utilities Page
     Background: Open example utilities page
         Given I have opened the "Utilities" page
 
-
     Scenario: Call a lodash method - Cypress._
         Given I have made a GET request to the "users" endpoint
         When I use lodash methods to create an array of the first 3 IDs

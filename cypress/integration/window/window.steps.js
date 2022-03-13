@@ -1,4 +1,4 @@
-import { Given, When, Then } from "cypress-cucumber-preprocessor/steps"
+import { Then } from "cypress-cucumber-preprocessor/steps"
 import WindowPage from "../../pages/window_page"
 
 Then('the window should have the following properties', (properties) => {
